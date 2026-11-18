@@ -49,6 +49,17 @@ describe("assertLocalDatabaseUrl", () => {
     );
   });
 
+  // pg lets ?host= and ?hostaddr= override the host before the "?", so
+  // these would connect to the remote server while looking like localhost.
+  it.each([
+    "postgres://app@localhost:5433/db?host=ep-quiet-river-a1b2c3.us-east-1.aws.neon.tech",
+    "postgres://app@localhost:5433/db?sslmode=disable&hostaddr=10.0.0.5",
+  ])("refuses %s", (url) => {
+    expect(() => assertLocalDatabaseUrl(url)).toThrow(
+      /Refusing to run.*overrides the host/,
+    );
+  });
+
   it("refuses a value that isn't a URL, without echoing it", () => {
     let message = "";
     try {

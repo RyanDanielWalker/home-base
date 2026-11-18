@@ -31,19 +31,29 @@ export function requireDatabaseUrl(
  * machine, so destructive commands (db:reset, and the seed script from plan
  * step 6) can't run against Neon even if a production URL ends up in `.env`.
  *
- * It checks the host only. It's a guardrail for the commands that call it,
- * not a wall: anything that doesn't call it will use whatever URL it's given.
+ * It checks where the URL connects, nothing else. It's a guardrail for the
+ * commands that call it, not a wall: anything that doesn't call it will use
+ * whatever URL it's given.
  */
 export function assertLocalDatabaseUrl(url: string): void {
-  let host: string;
+  let parsed: URL;
   try {
-    // Lowercased by hand: `URL` only lowercases hosts for schemes it knows,
-    // like http:, and postgres: isn't one of them.
-    host = new URL(url).hostname.toLowerCase();
+    parsed = new URL(url);
   } catch {
     // Don't echo the URL: if it's a real one, it contains a password.
     throw new Error("Refusing to run: DATABASE_URL is not a valid URL.");
   }
+  // pg reads ?host= and ?hostaddr= and connects there instead of the host
+  // before the "?". So "localhost/db?host=prod.example" goes to prod.
+  if (parsed.searchParams.has("host") || parsed.searchParams.has("hostaddr")) {
+    throw new Error(
+      "Refusing to run: DATABASE_URL has a ?host= or ?hostaddr= setting, which " +
+        "overrides the host. This command deletes data, so it only runs against localhost.",
+    );
+  }
+  // Lowercased by hand: `URL` only lowercases hosts for schemes it knows,
+  // like http:, and postgres: isn't one of them.
+  const host = parsed.hostname.toLowerCase();
   if (!LOCAL_HOSTS.has(host)) {
     throw new Error(
       `Refusing to run: DATABASE_URL points at "${host}", not this machine. ` +

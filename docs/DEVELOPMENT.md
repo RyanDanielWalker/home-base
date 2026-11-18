@@ -4,7 +4,7 @@ How work on Home Base gets done. Setup instructions arrive with the first code; 
 
 ## Setup
 
-Not yet: there is no application code. The v1 build plan decides the local database setup and the commands, and this section gets them in the same commit that adds them (see [the roadmap](./ROADMAP.md), Before v1).
+Not yet: there is no application code. The approved [v1 build plan](./V1-BUILD-PLAN.md) sets it up in steps 3 to 5: Node, then Postgres in Docker for local development ([0028](./adr/0028-run-postgres-in-docker-for-local-development.md)), then a Google OAuth client and a local `.env`. This section gets the exact commands in the same commits that add them.
 
 ## How a change gets made
 

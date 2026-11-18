@@ -1,6 +1,6 @@
 # v1 build plan
 
-*Drafted 2026-11-18. Status: **waiting on Ryan's approval.** No code gets written until he approves it.*
+*Drafted 2026-11-18. Status: **approved by Ryan on 2026-11-18**, taking every recommendation. The decisions are recorded in ADRs [0026](./adr/0026-build-logging-and-the-grid-before-the-to-do-list.md) to [0039](./adr/0039-small-v1-product-calls.md).*
 
 This is the plan for getting from "no code" to the v1 on [the roadmap](./ROADMAP.md): sign in, a to-do list, logging a session, and the movement grid, deployed and in daily use. It has two parts:
 
@@ -376,3 +376,4 @@ Logged here so it isn't forgotten, and added to the roadmap when the plan is app
 ## Change log
 
 - 2026-11-18: drafted, waiting on Ryan's approval.
+- 2026-11-18: approved as written, every recommendation taken. Step 1 done: decisions recorded as ADRs 0026 to 0039 (E1 to E10 are 0026 to 0035, P1 to P4 are 0036 to 0039).

@@ -58,5 +58,19 @@ Don't write one for routine choices (naming, small refactors, picking a utility 
 | [0023](./0023-deal-with-stale-tasks-before-adding.md) | Show stale tasks first when adding a task to the current list | Accepted |
 | [0024](./0024-getting-old-group-at-the-top-of-the-backlog.md) | Float backlog tasks 10+ days old into a "getting old" group | Accepted |
 | [0025](./0025-task-states-three-shapes-three-meanings.md) | Show task states as three shapes with three meanings, with a pale amber tint past the cap | Accepted |
+| [0026](./0026-build-logging-and-the-grid-before-the-to-do-list.md) | Build logging and the grid before the to-do list | Accepted |
+| [0027](./0027-deploy-a-walking-skeleton-early.md) | Deploy a walking skeleton to production early | Accepted |
+| [0028](./0028-run-postgres-in-docker-for-local-development.md) | Run Postgres in Docker for local development | Accepted |
+| [0029](./0029-use-pg-over-tcp-in-development-and-production.md) | Use the standard `pg` driver over TCP, in development and production | Accepted |
+| [0030](./0030-generate-sql-migrations-and-run-them-in-the-production-build.md) | Generate SQL migrations with Drizzle Kit, and run them in the production build | Accepted |
+| [0031](./0031-one-server-action-helper-zod-and-composite-foreign-keys.md) | Send every Server Action through one helper, validate with Zod, and enforce ownership in foreign keys | Accepted |
+| [0032](./0032-test-with-vitest-against-a-local-test-database.md) | Test with Vitest, against a local test database, and run the tests in CI | Accepted |
+| [0033](./0033-allowlist-who-can-sign-in.md) | Only allowlisted email addresses can sign in | Accepted |
+| [0034](./0034-tailwind-dnd-kit-and-no-date-library.md) | Use Tailwind CSS and dnd-kit, and handle dates without a library | Accepted |
+| [0035](./0035-import-the-pre-app-log-through-a-page.md) | Import the pre-app log through a page in the app, not a script | Accepted |
+| [0036](./0036-keep-quiets-a-stale-task-until-tomorrow.md) | "Keep, I'm on it" quiets a stale task's prompt until tomorrow, and the label keeps counting | Accepted |
+| [0037](./0037-keep-moves-a-task-out-of-getting-old-for-7-days.md) | "Keep" moves a task out of "Getting old" for 7 days | Accepted |
+| [0038](./0038-three-activity-days-show-the-first-two-families-logged.md) | A three-activity day's square shows the first two families logged | Accepted |
+| [0039](./0039-small-v1-product-calls.md) | Small v1 product calls: calendar days, rest as a family, defaults, and done tasks | Accepted |
 
-ADRs 0001 to 0025 were all written on 2026-11-18, when the repo was created. 0004 to 0010 record the stack and auth decisions approved that day. 0011 to 0024 record the product brief's decision log, which moved here from the private brief ([0003](./0003-keep-real-data-and-the-private-brief-out-of-the-repo.md)). 0025 records the task-state visual system Ryan chose the same day.
+ADRs 0001 to 0025 were all written on 2026-11-18, when the repo was created. 0004 to 0010 record the stack and auth decisions approved that day. 0011 to 0024 record the product brief's decision log, which moved here from the private brief ([0003](./0003-keep-real-data-and-the-private-brief-out-of-the-repo.md)). 0025 records the task-state visual system Ryan chose the same day. 0026 to 0039 record the decisions in the [v1 build plan](../V1-BUILD-PLAN.md), which Ryan approved on 2026-11-18 by taking every recommendation.

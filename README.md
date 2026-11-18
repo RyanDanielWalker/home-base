@@ -2,7 +2,7 @@
 
 A personal daily dashboard: one screen to start the day on. A to-do list, a GitHub-style grid of movement colored by kind, and eventually the rest of the morning (calendar, weather, a few headlines) on one page that ends.
 
-**Status:** planning. No application code yet. The stack is decided and the v1 build plan is next.
+**Status:** building v1. The app is scaffolded and its one page says "Home Base." The approved [build plan](docs/V1-BUILD-PLAN.md) says what comes next. To run it locally, see [`docs/DEVELOPMENT.md`](docs/DEVELOPMENT.md).
 
 ## What v1 will be
 

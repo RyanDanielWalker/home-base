@@ -378,3 +378,4 @@ Logged here so it isn't forgotten, and added to the roadmap when the plan is app
 - 2026-11-18: drafted, waiting on Ryan's approval.
 - 2026-11-18: approved as written, every recommendation taken. Step 1 done: decisions recorded as ADRs 0026 to 0039 (E1 to E10 are 0026 to 0035, P1 to P4 are 0036 to 0039).
 - 2026-11-18: step 2 done. Better Auth stores session tokens as-is behind signed cookies; accepted in [0040](./adr/0040-accept-better-auths-plain-session-tokens-behind-signed-cookies.md). Next is step 3, in the terminal.
+- 2026-11-18: step 3 done. Pinned versions: `next` 16.4.6, `react` 19.3.1, `typescript` 5.9.3 (`create-next-app`'s range; 7.x exists but isn't what Next.js generates for), `eslint` 9.39.5 (the major `eslint-config-next` is built on), `tailwindcss` 4.3.5, `prettier` 3.10.1, `vitest` 5.1.1. Node pinned to 24 LTS, because Vitest 5 doesn't support Node 25. Setup and commands are in [`DEVELOPMENT.md`](./DEVELOPMENT.md#setup). Next is step 4.

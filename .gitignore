@@ -1,0 +1,42 @@
+# dependencies
+/node_modules
+/.pnp
+.pnp.*
+
+# testing
+/coverage
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+
+# env files (can opt-in for committing if needed)
+.env*
+!.env.example
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# claude code: personal permission overrides
+.claude/settings.local.json
+
+# private material that must never be committed (ADR 0003).
+# The product brief holds health details; real exports and logs hold real data.
+/private/
+*Product Brief*
+*.export.csv
+*.export.json

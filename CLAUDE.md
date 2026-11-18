@@ -2,11 +2,12 @@
 
 A personal daily dashboard: one screen to start the day on. v1 is a to-do list, session logging, and a GitHub-style movement grid. It's a long-term build and a possible portfolio piece, so the code, the docs, and the reasoning are all part of what's being shown. Treat quality and explainability as requirements, not extras.
 
-**Where it stands:** planning, pre-v1. The stack and auth are decided (ADRs 0004 to 0010). There is no application code yet. The next step is a numbered v1 build plan that Ryan approves before any code is written (`docs/ROADMAP.md`).
+**Where it stands:** planning, pre-v1. The stack and auth are decided (ADRs 0004 to 0010). There is no application code yet. The numbered v1 build plan is drafted in `docs/V1-BUILD-PLAN.md` and waits on Ryan's approval; no code is written before that.
 
 ## Read first
 
 - `docs/ROADMAP.md`: what's planned, in what order, and what's still open
+- `docs/V1-BUILD-PLAN.md`: the numbered v1 build plan, its decisions, and which steps need Ryan's accounts
 - `docs/adr/`: why it's built this way. Check here before proposing a change to something that looks odd; it may be deliberate.
 - `docs/PRODUCT.md`: what the app does and the design principles every feature is checked against
 - `docs/ARCHITECTURE.md`: how the system fits together (planned until v1 code lands)

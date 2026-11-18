@@ -3,7 +3,7 @@ name: next
 description: Pick up the next roadmap item and take it from plan to reviewed, committed work. Stops before pushing.
 argument-hint: "[roadmap item to do instead of the next one]"
 disable-model-invocation: true
-allowed-tools: Bash(git status *) Bash(git log *) Bash(git diff *) Bash(git show *) Bash(git branch *) Bash(npm run typecheck *) Bash(npm test *) Bash(npm run lint *) Bash(npm run build *)
+allowed-tools: Bash(git status *) Bash(git log *) Bash(git diff *) Bash(git show *) Bash(git branch *) Bash(npm run typecheck *) Bash(npm test *) Bash(npm run lint *) Bash(npm run format:check *) Bash(npm run build *)
 ---
 
 # /next: ship the next roadmap item
@@ -66,8 +66,8 @@ Read the ADRs the item links to, the code it touches, and any tests nearby. Chec
 
 - Small commits, one idea each, Conventional Commits. Subject says what, body says why.
 - One commit per logical change, even if it spans several layers. No `Co-Authored-By` lines.
-- Before every commit, run the checks that exist: `npm run typecheck`, `npm test`, `npm run lint`. Before the last one, `npm run build` too.
-- **Never push.** If the commits include a database migration, say so under "Do before you push" and follow the migration rule in `CLAUDE.md` once the build plan has set one. A migration can't be undone by holding the deploy.
+- Before every commit, run the checks: `npm run typecheck`, `npm test`, `npm run lint`, `npm run format:check`. Before the last one, `npm run build` too. Tests that need the database need `npm run db:up` first.
+- **Never push.** If the commits include a database migration (a new file in `drizzle/`), say so under "Do before you push": pushing `main` runs it against production. Check it against the migration rule in `CLAUDE.md` (generated, not hand-written; adds only, or removes something an earlier push already stopped using). A migration can't be undone by holding the deploy.
 
 ## 7. Review your own work cold
 

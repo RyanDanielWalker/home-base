@@ -3,7 +3,7 @@ name: audit
 description: A fresh-session review of Home Base as it stands, by Claude. Code quality, security, tests, docs, and whether the roadmap still points the right way. Reports; doesn't fix.
 argument-hint: "[quiz] [area to focus on, like auth, tests, or frontend]"
 disable-model-invocation: true
-allowed-tools: Bash(git status *) Bash(git log *) Bash(git diff *) Bash(git show *) Bash(git branch *) Bash(git ls-files *) Bash(npm run typecheck *) Bash(npm test *) Bash(npm run lint *) Bash(npm run build *)
+allowed-tools: Bash(git status *) Bash(git log *) Bash(git diff *) Bash(git show *) Bash(git branch *) Bash(git ls-files *) Bash(npm run typecheck *) Bash(npm test *) Bash(npm run lint *) Bash(npm run format:check *) Bash(npm run build *)
 ---
 
 # /audit: a fresh-session review of where Home Base stands
@@ -38,7 +38,7 @@ Earlier audits:
 
 ## 2. Run the checks
 
-`npm run typecheck`, `npm run lint`, `npm test`, `npm run build`. Note each one's result with numbers (tests passed, lint warnings). A failing check is the first finding. A check that doesn't exist yet is noted, not failed. If a check needs the database, skip it and say so; never point anything at production.
+`npm run typecheck`, `npm run lint`, `npm test`, `npm run format:check`, `npm run build`. Note each one's result with numbers (tests passed, lint warnings). A failing check is the first finding. A check that doesn't exist yet is noted, not failed. If a check needs the database, skip it and say so; never point anything at production.
 
 ## 3. Read it like an outsider
 
@@ -85,7 +85,7 @@ After the report, ask Ryan the questions one at a time and wait for each answer 
 Short and in plain English. No em dashes.
 
 1. **Verdict:** three sentences. How it's doing, the biggest risk, the one thing to do next.
-2. **Checks:** typecheck, lint, tests, build, one line each.
+2. **Checks:** typecheck, lint, tests, format, build, one line each.
 3. **Scorecard:** security, data, errors, tests, frontend, consistency, docs, direction. Each gets one word (strong, good, fair, weak) and one sentence of why.
 4. **Findings:** ranked by how much they matter to the goal. Each says what happens, the `file:line`, the fix size (small, medium, large), and whether it's new or already on the roadmap.
 5. **Since the last audit:** fixed and still open. Skip it the first time.

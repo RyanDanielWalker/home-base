@@ -2,7 +2,7 @@
 
 A personal daily dashboard: one screen to start the day on. v1 is a to-do list, session logging, and a GitHub-style movement grid. It's a long-term build and a possible portfolio piece, so the code, the docs, and the reasoning are all part of what's being shown. Treat quality and explainability as requirements, not extras.
 
-**Where it stands:** building v1. The numbered v1 build plan in `docs/V1-BUILD-PLAN.md` was approved on 2026-11-18 (ADRs 0026 to 0039). Step 3 is done: the Next.js app is scaffolded with its checks, and its one page says "Home Base." There is no database, auth, or feature code yet. Build from the plan in order; step 4 (local database) is next.
+**Where it stands:** building v1. The numbered v1 build plan in `docs/V1-BUILD-PLAN.md` was approved on 2026-11-18 (ADRs 0026 to 0039). Steps 3 and 4 are done: the Next.js app is scaffolded with its checks, and a local Postgres runs in Docker with Drizzle and the migration scripts, but no tables yet. There is no auth or feature code. Build from the plan in order; step 5 (sign in with Google) is next, and needs Ryan's Google Cloud account.
 
 ## Read first
 

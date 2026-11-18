@@ -8,7 +8,7 @@ The thing most likely to kill this project is taking too long to become useful. 
 
 ## Before v1
 
-Where things stand on 2026-11-18: the build has started. Stack and auth are decided ([0004](./adr/0004-one-nextjs-app-with-server-actions.md) to [0010](./adr/0010-store-each-sessions-local-date-and-utc-time.md)), and the app is scaffolded (plan step 3) with no database or features yet. `/next` doesn't pick these items up automatically; each needs Ryan in the loop.
+Where things stand on 2026-11-18: the build has started. Stack and auth are decided ([0004](./adr/0004-one-nextjs-app-with-server-actions.md) to [0010](./adr/0010-store-each-sessions-local-date-and-utc-time.md)), the app is scaffolded (plan step 3), and the local database runs in Docker with an empty schema (step 4). No auth or features yet. `/next` doesn't pick these items up automatically; each needs Ryan in the loop.
 
 - [x] Create the repo, set up like Snippr: `CLAUDE.md`, `.claude/settings.json`, `/next` and `/audit`, this roadmap, ADR template, and ADRs for every decision so far ([0001](./adr/0001-record-architecture-decisions.md), [0002](./adr/0002-carry-over-snippr-working-rules.md)). Done 2026-11-18
 - [x] A public version of the product brief, without the health details ([0003](./adr/0003-keep-real-data-and-the-private-brief-out-of-the-repo.md)). Done 2026-11-18 as [`PRODUCT.md`](./PRODUCT.md); Ryan to read it once and say if anything in it is too personal
@@ -79,3 +79,4 @@ Open questions and ideas with no phase yet. Anything here can be picked up when 
 - [ ] Confirm whether Vercel's Hobby terms restrict commercial use, before Home Base is ever offered to other people ([0007](./adr/0007-host-on-vercel-hobby.md))
 - [ ] If the Neon cold start makes the first morning load annoying: a paid plan or a keep-warm ping ([0005](./adr/0005-postgres-on-neon-free-plan.md))
 - [ ] `npm audit` reports a high-severity advisory (GHSA-fc5q-39xc-vjpf) in `picomatch`, a file-pattern matcher pulled in by Vitest and ESLint. It's a slow-regex bug that only matters if an attacker controls the pattern, and these tools only see our own patterns at development time; none of it ships to production. `npm audit fix --force` would downgrade Vitest to 3.x, so it wasn't taken. Recheck when Vitest or `eslint-config-next` updates. Found in plan step 3
+- [ ] `npm audit` reports a moderate advisory (GHSA-67mh-4wv8-2f99) in an old `esbuild` that `drizzle-kit` 0.31.11 pulls in through `@esbuild-kit/esm-loader`. The bug lets a web page read responses from esbuild's development server, which Drizzle Kit never starts: it only uses esbuild to load `drizzle.config.ts`. Development-only, nothing ships to production. Recheck when Drizzle Kit updates (its 1.0 line drops `@esbuild-kit`). Found in plan step 4

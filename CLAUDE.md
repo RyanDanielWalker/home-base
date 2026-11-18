@@ -2,7 +2,7 @@
 
 A personal daily dashboard: one screen to start the day on. v1 is a to-do list, session logging, and a GitHub-style movement grid. It's a long-term build and a possible portfolio piece, so the code, the docs, and the reasoning are all part of what's being shown. Treat quality and explainability as requirements, not extras.
 
-**Where it stands:** planning, pre-v1. The stack and auth are decided (ADRs 0004 to 0010). There is no application code yet. The numbered v1 build plan in `docs/V1-BUILD-PLAN.md` was approved on 2026-11-18 (ADRs 0026 to 0039). Build from it in order, starting at step 3.
+**Where it stands:** building v1. The numbered v1 build plan in `docs/V1-BUILD-PLAN.md` was approved on 2026-11-18 (ADRs 0026 to 0039). Step 3 is done: the Next.js app is scaffolded with its checks, and its one page says "Home Base." There is no database, auth, or feature code yet. Build from the plan in order; step 4 (local database) is next.
 
 ## Read first
 
@@ -11,15 +11,25 @@ A personal daily dashboard: one screen to start the day on. v1 is a to-do list, 
 - `docs/adr/`: why it's built this way. Check here before proposing a change to something that looks odd; it may be deliberate.
 - `docs/PRODUCT.md`: what the app does and the design principles every feature is checked against
 - `docs/ARCHITECTURE.md`: how the system fits together (planned until v1 code lands)
-- `docs/DEVELOPMENT.md`: how work gets done, and setup once there is something to set up
+- `docs/DEVELOPMENT.md`: how work gets done, how to set up a fresh clone, and what each command does
+- `AGENTS.md`: written by Next.js itself. It says this Next.js is newer than your training data, so read the guide in `node_modules/next/dist/docs/` before writing Next.js code. `next dev` re-adds it if it's deleted, so it stays committed.
 
 ## Stack
 
-Decided, not yet installed: Next.js 16 (App Router), React, TypeScript, Tailwind CSS, Postgres on Neon (Docker locally), Drizzle ORM with the `pg` driver, Better Auth with Google sign-in, Zod, dnd-kit, Vitest, deployed on Vercel Hobby. Reads happen in Server Components, writes in Server Actions through one helper, and business rules live in plain TypeScript modules (ADRs 0004, 0028 to 0034).
+Installed: Next.js 16 (App Router), React, TypeScript, Tailwind CSS, ESLint, Prettier, Vitest, on Node 24. Decided, not yet installed: Postgres on Neon (Docker locally), Drizzle ORM with the `pg` driver, Better Auth with Google sign-in, Zod, dnd-kit, deployed on Vercel Hobby. Reads happen in Server Components, writes in Server Actions through one helper, and business rules live in plain TypeScript modules (ADRs 0004, 0028 to 0034).
 
 ## Commands
 
-None yet. When the app is scaffolded, this section lists `dev`, `build`, `lint`, `typecheck`, `test`, and the database commands, in the same commit that adds them.
+Run on Node 24 (`.node-version`; `fnm` or `nvm` picks it up). `docs/DEVELOPMENT.md` explains each one.
+
+- `npm run dev`: the app at http://localhost:3000, reloading on save
+- `npm run build`: the production build (also type-checks)
+- `npm run lint`: ESLint. Any warning fails it (`--max-warnings=0`)
+- `npm run typecheck`: generates Next.js's route types, then runs `tsc --noEmit`
+- `npm test`: Vitest, once. `npm run test:watch` re-runs on save
+- `npm run format:check`: Prettier, check only. `npm run format` rewrites files
+
+Before every commit: `npm run typecheck`, `npm test`, `npm run lint`, `npm run format:check`. Before the last commit of a task, `npm run build` too. The database commands arrive with plan step 4.
 
 ## Rules for changes
 
@@ -46,6 +56,7 @@ Direct, a little dry, human. No em dashes. No marketing filler ("seamless," "pow
 
 ## Known traps
 
+- The project runs on Node 24 (`.node-version`, and `engines` in `package.json`, which Vercel also reads). A bare `node` on Ryan's Mac may be Homebrew's Node 25, which is past end of life and outside Vitest 5's supported versions. `.npmrc` sets `engine-strict=true`, so `npm install` on the wrong Node fails loudly instead of installing quietly. In a non-interactive shell, run `eval "$(fnm env)" && fnm use` first.
 - Better Auth stores OAuth tokens unencrypted unless `account.encryptOAuthTokens: true` is set. It must be set from the first commit that configures auth (ADR 0008).
 - Better Auth stores session tokens as-is; only the signed session cookie protects them. Never enable its `bearer` plugin, and never reuse `BETTER_AUTH_SECRET` between development and production, without revisiting ADR 0040.
 - Neon's free plan suspends the database after 5 minutes idle, so the first request after a quiet stretch is slow. That's expected, not a bug (ADR 0005).

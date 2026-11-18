@@ -1,0 +1,7 @@
+# Generated files
+package-lock.json
+next-env.d.ts
+
+# Prose is hand-formatted. Prettier would re-pad every Markdown table
+# and turn each docs edit into a noisy diff.
+*.md

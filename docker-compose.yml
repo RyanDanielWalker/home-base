@@ -1,0 +1,36 @@
+# Local Postgres for development and tests. Production is Postgres on Neon.
+# Why Docker: docs/adr/0028-run-postgres-in-docker-for-local-development.md
+# How to use it: docs/DEVELOPMENT.md, "Local database".
+name: home-base
+
+services:
+  postgres:
+    # Neon's default for new projects is Postgres 18, and a Neon project's
+    # major version can't change after it's created, so step 8 creates the
+    # production project on 18 to match this. Minor versions differ freely.
+    image: postgres:18
+    environment:
+      POSTGRES_USER: home_base
+      POSTGRES_PASSWORD: home_base
+      # The development database. The test database is created by the script
+      # in docker/postgres-init the first time the container starts.
+      POSTGRES_DB: home_base
+    ports:
+      # Bound to localhost so nothing else on the network can reach it.
+      # Host port 5433, not the default 5432, so this can run alongside
+      # Snippr's local Postgres, which already uses 5432.
+      - "127.0.0.1:5433:5432"
+    volumes:
+      # Postgres 18's image keeps its data under /var/lib/postgresql/18/,
+      # so the volume mounts the parent folder. Mounting .../data, as images
+      # before 18 expected, makes the container refuse to start.
+      - postgres-data:/var/lib/postgresql
+      - ./docker/postgres-init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U home_base -d home_base"]
+      interval: 2s
+      timeout: 5s
+      retries: 15
+
+volumes:
+  postgres-data:

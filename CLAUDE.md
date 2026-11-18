@@ -16,7 +16,7 @@ A personal daily dashboard: one screen to start the day on. v1 is a to-do list, 
 
 ## Stack
 
-Installed: Next.js 16 (App Router), React, TypeScript, Tailwind CSS, ESLint, Prettier, Vitest, on Node 24. Decided, not yet installed: Postgres on Neon (Docker locally), Drizzle ORM with the `pg` driver, Better Auth with Google sign-in, Zod, dnd-kit, deployed on Vercel Hobby. Reads happen in Server Components, writes in Server Actions through one helper, and business rules live in plain TypeScript modules (ADRs 0004, 0028 to 0034).
+Installed: Next.js 16 (App Router), React, TypeScript, Tailwind CSS, ESLint, Prettier, Vitest, on Node 24, and Drizzle ORM with the `pg` driver against Postgres 18 in Docker locally. Decided, not yet installed: Postgres on Neon in production, Better Auth with Google sign-in, Zod, dnd-kit, deployed on Vercel Hobby. Reads happen in Server Components, writes in Server Actions through one helper, and business rules live in plain TypeScript modules (ADRs 0004, 0028 to 0034).
 
 ## Commands
 
@@ -28,8 +28,13 @@ Run on Node 24 (`.node-version`; `fnm` or `nvm` picks it up). `docs/DEVELOPMENT.
 - `npm run typecheck`: generates Next.js's route types, then runs `tsc --noEmit`
 - `npm test`: Vitest, once. `npm run test:watch` re-runs on save
 - `npm run format:check`: Prettier, check only. `npm run format` rewrites files
+- `npm run db:up` / `db:down`: start or stop the local Postgres in Docker. `db:down` keeps the data
+- `npm run db:generate`: write a SQL migration from changes to `src/db/schema.ts`, into `drizzle/`
+- `npm run db:migrate`: apply migrations that haven't run yet to the database in `DATABASE_URL`
+- `npm run db:reset`: empty the local database and re-apply every migration. Refuses any host but localhost
+- `npm run db:studio`: browse the database in Drizzle Studio
 
-Before every commit: `npm run typecheck`, `npm test`, `npm run lint`, `npm run format:check`. Before the last commit of a task, `npm run build` too. The database commands arrive with plan step 4.
+Before every commit: `npm run typecheck`, `npm test`, `npm run lint`, `npm run format:check`. Before the last commit of a task, `npm run build` too.
 
 ## Rules for changes
 
@@ -57,6 +62,8 @@ Direct, a little dry, human. No em dashes. No marketing filler ("seamless," "pow
 ## Known traps
 
 - The project runs on Node 24 (`.node-version`, and `engines` in `package.json`, which Vercel also reads). A bare `node` on Ryan's Mac may be Homebrew's Node 25, which is past end of life and outside Vitest 5's supported versions. `.npmrc` sets `engine-strict=true`, so `npm install` on the wrong Node fails loudly instead of installing quietly. In a non-interactive shell, run `eval "$(fnm env)" && fnm use` first.
+- The local Postgres listens on port **5433**, not 5432, so it can run next to Snippr's. "Connection refused" usually means Docker Desktop isn't running, or `npm run db:up` hasn't been run (ADR 0028).
+- Drizzle Kit and the scripts in `scripts/` read `.env` themselves, but a variable already set in the shell wins. A `DATABASE_URL` exported in the terminal silently overrides the local one.
 - Better Auth stores OAuth tokens unencrypted unless `account.encryptOAuthTokens: true` is set. It must be set from the first commit that configures auth (ADR 0008).
 - Better Auth stores session tokens as-is; only the signed session cookie protects them. Never enable its `bearer` plugin, and never reuse `BETTER_AUTH_SECRET` between development and production, without revisiting ADR 0040.
 - Neon's free plan suspends the database after 5 minutes idle, so the first request after a quiet stretch is slow. That's expected, not a bug (ADR 0005).

@@ -2,7 +2,7 @@
 
 *Last updated: 2026-11-18*
 
-**Status: mostly planned.** The app is scaffolded (plan step 3) and has one page; [What exists now](#what-exists-now) lists it. Everything else here describes the shape the decided stack gives the app, so the code has something to match. When v1 is done, this file is rewritten to describe what actually exists, file by file (plan step 17).
+**Status: mostly planned.** The app is scaffolded (plan step 3) and has one page, and a local database with an empty schema is wired up (plan step 4); [What exists now](#what-exists-now) lists it. Everything else here describes the shape the decided stack gives the app, so the code has something to match. When v1 is done, this file is rewritten to describe what actually exists, file by file (plan step 17).
 
 ## The pieces
 
@@ -62,7 +62,7 @@ The schema the approved [v1 build plan](./V1-BUILD-PLAN.md#the-data-model) settl
 
 ## What exists now
 
-As of plan step 3: a Next.js app with one page and no data.
+As of plan step 4: a Next.js app with one page, and a database layer with no tables yet.
 
 | File | What it does |
 | --- | --- |
@@ -70,6 +70,23 @@ As of plan step 3: a Next.js app with one page and no data.
 | `src/app/page.tsx` | The page at `/`. A heading that says "Home Base" |
 | `src/app/globals.css` | Loads Tailwind and defines the color tokens (background and foreground, light and dark). The family and task colors join them in plan step 10 |
 | `next.config.ts` | Next.js settings: Cache Components on, and Tailwind's CSS loader |
+| `src/db/schema.ts` | The database schema in TypeScript. Empty until plan steps 5 and 6 add tables |
+| `src/db/client.ts` | Creates the one `db` object the app queries through: a `pg` connection pool wrapped by Drizzle. Nothing imports it yet |
+| `src/db/database-url.ts` | Reads `DATABASE_URL` with a clear error when it's missing, and the localhost guard for destructive commands. Tested in `database-url.test.ts` |
+| `drizzle.config.ts` | Drizzle Kit's settings: where the schema is, where migrations go (`drizzle/`, created by the first `db:generate`), and which database to use |
+| `scripts/db-reset.ts` | Empties the local database so `db:reset` can rebuild it from the migrations. Guarded to localhost |
+| `docker-compose.yml`, `docker/postgres-init/` | The local Postgres 18 and its two databases, `home_base` and `home_base_test` |
+
+### How the database layer fits together
+
+There are two separate programs that talk to Postgres, and they share one setting, `DATABASE_URL`:
+
+- **The app** imports `db` from `src/db/client.ts` and runs queries through it. Drizzle turns a call like `db.select().from(task).where(eq(task.userId, userId))` into SQL, and hands it to a `pg` **connection pool**, which keeps a few connections to Postgres open and lends one to each query. Next.js reads `DATABASE_URL` from `.env` locally and from Vercel's settings in production.
+- **Drizzle Kit**, a command-line tool used only during development and the production build, reads `drizzle.config.ts`. `db:generate` compares `src/db/schema.ts` with the last migration's snapshot and writes the SQL for the difference into `drizzle/`. `db:migrate` applies the files the database hasn't seen yet, and records each one in a table called `drizzle.__drizzle_migrations`, so it never applies a file twice ([0030](./adr/0030-generate-sql-migrations-and-run-them-in-the-production-build.md)).
+
+The schema file is the source of truth for both: the app's queries are type-checked against it, and the migrations are generated from it. So a column exists in TypeScript and in the database because both came from the same line in `schema.ts`.
+
+`requireDatabaseUrl` sits in front of both. Without it, a missing `DATABASE_URL` doesn't fail where you'd look: `pg` quietly falls back to a server on this machine and your macOS user name, and the error you see is a confusing login failure.
 
 The tooling around it (TypeScript, ESLint, Prettier, Vitest, the Node version) is explained in [`DEVELOPMENT.md`](./DEVELOPMENT.md#commands).
 

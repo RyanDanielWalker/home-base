@@ -1,6 +1,8 @@
 # Generated files
 package-lock.json
 next-env.d.ts
+# Drizzle Kit writes the migration SQL and its snapshots; keep them byte-for-byte
+/drizzle/
 
 # Prose is hand-formatted. Prettier would re-pad every Markdown table
 # and turn each docs edit into a noisy diff.

@@ -8,8 +8,5 @@ export default defineConfig({
   test: {
     environment: "node",
     include: ["src/**/*.test.ts"],
-    // There are no tests until plan step 6. Remove this line with the first one,
-    // so a broken include pattern can never pass silently.
-    passWithNoTests: true,
   },
 });

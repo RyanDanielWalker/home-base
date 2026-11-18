@@ -47,5 +47,6 @@ Direct, a little dry, human. No em dashes. No marketing filler ("seamless," "pow
 ## Known traps
 
 - Better Auth stores OAuth tokens unencrypted unless `account.encryptOAuthTokens: true` is set. It must be set from the first commit that configures auth (ADR 0008).
+- Better Auth stores session tokens as-is; only the signed session cookie protects them. Never enable its `bearer` plugin, and never reuse `BETTER_AUTH_SECRET` between development and production, without revisiting ADR 0040.
 - Neon's free plan suspends the database after 5 minutes idle, so the first request after a quiet stretch is slow. That's expected, not a bug (ADR 0005).
 - A day boundary computed on the server is in UTC. An 11pm walk in New York is already tomorrow in UTC. Always compute the local date in the user's time zone (ADR 0010).

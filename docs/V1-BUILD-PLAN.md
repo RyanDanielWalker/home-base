@@ -244,7 +244,7 @@ Better Auth with the Drizzle adapter, Google as the only provider, basic scopes,
 - Put `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, a generated `BETTER_AUTH_SECRET`, and `ALLOWED_EMAILS` in `.env` (never committed; Claude can't read it, per the deny rule).
 - Sign in once to confirm it works, and once with a second Google account to confirm it's refused.
 
-**Done when:** Ryan can sign in and out locally, a non-allowlisted account sees the refusal page, and the stored `account` row's tokens are visibly encrypted (checked with `db:studio`). Also check whether Better Auth sends usage telemetry by default, and turn it off if so (not checked for this plan).
+**Done when:** Ryan can sign in and out locally, a non-allowlisted account sees the refusal page, and the stored `account` row's tokens are visibly encrypted (checked with `db:studio`). Better Auth's telemetry is off by default in 1.7.25 (checked in step 2, [0040](./adr/0040-accept-better-auths-plain-session-tokens-behind-signed-cookies.md)); confirm that's still true for the version installed.
 
 ### 6. App schema, starting data, time zone 💻
 
@@ -377,3 +377,4 @@ Logged here so it isn't forgotten, and added to the roadmap when the plan is app
 
 - 2026-11-18: drafted, waiting on Ryan's approval.
 - 2026-11-18: approved as written, every recommendation taken. Step 1 done: decisions recorded as ADRs 0026 to 0039 (E1 to E10 are 0026 to 0035, P1 to P4 are 0036 to 0039).
+- 2026-11-18: step 2 done. Better Auth stores session tokens as-is behind signed cookies; accepted in [0040](./adr/0040-accept-better-auths-plain-session-tokens-behind-signed-cookies.md). Next is step 3, in the terminal.
